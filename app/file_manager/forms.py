@@ -2,6 +2,9 @@ from django import forms
 
 
 class CreateFolderForm(forms.Form):
+    """
+    Форма создания новой папки
+    """
     folder_name = forms.CharField(
         widget=forms.TextInput(
             attrs={
@@ -13,5 +16,8 @@ class CreateFolderForm(forms.Form):
 
 
 class UploadFileForm(forms.Form):
+    """
+    Форма загрузки нового файла
+    """
     file = forms.FileField(required=False, label=False)
     redirect_link = forms.CharField(widget=forms.HiddenInput())

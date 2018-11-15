@@ -12,6 +12,9 @@ from file_manager.processes.links import LinksUtil
 
 
 def index_page(request):
+    """
+    Титульная страница приложения, открывающая начальную дирректорию
+    """
     files = Content.generate_folder_links(settings.START_FOLDER)
     response = {
         'files': files,
@@ -22,6 +25,10 @@ def index_page(request):
 
 
 def base_page(request, path: str):
+    """
+    Страница возвращающая содержимое внутренних папок или файлы, содержащиеся там
+    :param path: относительный путь до объекта
+    """
     current_path = LinksUtil.get_path_from_link(path)
     if '.' in current_path:
         response = Content.generate_file_response(current_path)
@@ -44,6 +51,9 @@ def base_page(request, path: str):
 
 
 def create_folder(request):
+    """
+    Генерация новой дирректории, название которой полученно с формы
+    """
     form = CreateFolderForm(request.POST)
     if form.is_valid():
         form_data = form.cleaned_data
@@ -56,6 +66,10 @@ def create_folder(request):
 
 
 def delete(request, path: str):
+    """
+    Удаление выбранного объекта
+    :param path: путь до объекта
+    """
     folder_path = '{}/{}'.format(settings.START_FOLDER, path.replace('+', '/'))
     redirect_link = '+'.join(folder_path.split('/')[2:-1])
     if '.' in folder_path:
@@ -66,6 +80,9 @@ def delete(request, path: str):
 
 
 def upload_file(request):
+    """
+    Загрузка файла на сервер, в текущую дирректорию
+    """
     form = UploadFileForm(request.POST, request.FILES)
     if form.is_valid():
         form_data = form.cleaned_data

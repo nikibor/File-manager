@@ -5,9 +5,18 @@ from bia_prev import settings
 
 
 class LinksUtil:
+    """
+    Набор функций, работающих с адресным представлением объектов
+    """
 
     @staticmethod
     def generate_folder_link(dir_name: str, file_name=None) -> str:
+        """
+        Получение ссылки для перехода по дирректориям в системе
+        :param dir_name: текущая папка
+        :param file_name: название файла
+        :return: ссылка на файл
+        """
         if file_name:
             file_path = os.path.join(dir_name, file_name)
         else:
@@ -18,6 +27,11 @@ class LinksUtil:
 
     @staticmethod
     def generate_path_links(current_folder: str) -> List:
+        """
+        Создание иеррхии ссылок, для возможности быстрого перехода в корневую дирректорию
+        :param current_folder: текущая папка
+        :return: шаблон с корневыми дирреториями
+        """
         folders_in_path = current_folder.split('/')
         folders_in_path.remove('static')
         folders_in_path.remove('app')
@@ -37,5 +51,10 @@ class LinksUtil:
 
     @staticmethod
     def get_path_from_link(file_link: str) -> str:
+        """
+        Получение адреса до файла из ссылки
+        :param file_link: ссылка на файл
+        :return: условный путь до файла
+        """
         return '{}/{}'.format(settings.START_FOLDER,
                               file_link.replace('+', '/'))
