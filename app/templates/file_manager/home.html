@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -14,8 +15,8 @@
         File manager
     </h1>
     <div class="row">
-        <div class="col-md-2"></div>
-        <div class="col-md-8">
+        <div class="col-md-1"></div>
+        <div class="col-md-7">
             <table class="table">
                 <thead class="thead-light">
                 <tr>
@@ -33,11 +34,13 @@
                 {% for file in files %}
                     <tr>
                         <th scope="row">
-                            <a href="/{{ file.link }}">{{ file.name }}</a>
+                            <a href="/{{ file.link }}"
+                               onmouseover="drawImage('{{ file.link }}')">
+                                {{ file.name }}
+                            </a>
                         </th>
                         <th scope="row">{{ file.size }} kb</th>
                         <th scope="row">
-
                             <a href="/delete/{{ file.link }}">
                                 <button type="button" class="btn btn-danger">
                                     Удалить
@@ -72,8 +75,33 @@
                 </div>
             </div>
         </div>
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-header">
+                    <h2>
+                        Изображение
+                    </h2>
+                </div>
+                <div class="card-body">
+                    <div id="img_preview">
+                        <p>
+                            Наведите на объект изображения для его демонстрации
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
+<script>
+    function drawImage(name) {
+        if ((/\.(gif|jpg|jpeg|tiff|png)$/i).test(name)) {
+            name = name.split('+').join('/');
+            link = '<img src="/static/' + name + '" style="width: 100%; height: 100%">';
+            document.getElementById("img_preview").innerHTML = link;
+        }
+    }
+</script>
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
         integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
         crossorigin="anonymous"></script>

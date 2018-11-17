@@ -25,11 +25,12 @@ class Content:
                 LinksUtil.generate_folder_link(start_position, f_name))
         files = []
         for i in range(len(file_names)):
+            is_folder = '.' not in file_names[i]
             files.append({
                 'name': file_names[i],
                 'link': file_links[i],
                 'size': get_file_size(
-                    os.path.join(start_position, file_names[i]))
+                    os.path.join(start_position, file_names[i]), is_folder)
             })
         return files
 
@@ -48,10 +49,18 @@ class Content:
         return response
 
 
-def get_file_size(file_path: str) -> float:
+def get_file_size(file_path: str, is_folder) -> float:
     """
     Получение размера файла в килобайтах
     :param file_path: путь до файла
     :return: размер файла
     """
-    return round(os.stat(file_path).st_size / 1024, 2)
+    if is_folder:
+        total_size = 0
+        for dirpath, dirnames, filenames in os.walk(file_path):
+            for f in filenames:
+                fp = os.path.join(dirpath, f)
+                total_size += os.path.getsize(fp)
+    else:
+        total_size = os.stat(file_path).st_size
+    return round(total_size / 1024, 2)
