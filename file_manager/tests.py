@@ -3,7 +3,7 @@ import shutil
 
 from django.test import TestCase
 
-from bia_prev import settings
+from app import settings
 from file_manager.processes.content import Content
 from file_manager.processes.links import LinksUtil
 

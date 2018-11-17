@@ -38,14 +38,13 @@ $ python manage.py createsuperuser
 Запуск приложения (По умолчанию запуск происходит на 8000 порту)
 
 ```sh
-$ python manage.py runserver
+$ sudo python manage.py runserver
 ```
 
 Также вохможна сборка из Docker контейнера:
 
 ```sh
-$ docker build -t fman .
-$ docker run -it --rm  fman
+$ sudo docker-compose up
 ```
 
 #### Тестирование

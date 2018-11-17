@@ -1,11 +1,8 @@
-FROM python:3
-
-ENV PYTHONBUFFERED 1
+FROM python:3.6
+ENV PYTHONUNBUFFERED 1
 RUN mkdir /code
 WORKDIR /code
-RUN ls
-COPY . /code
+ADD requirements.txt /code/
+RUN pip install --upgrade pip
 RUN pip install -r requirements.txt
-RUN ls
-CMD python app/manage.py migrate
-CMD python app/manage.py runserver localhost:8000
+ADD . /code/

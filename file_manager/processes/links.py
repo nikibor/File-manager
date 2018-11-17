@@ -1,7 +1,7 @@
 import os
 from typing import List
 
-from bia_prev import settings
+from app import settings
 
 
 class LinksUtil:
@@ -22,7 +22,7 @@ class LinksUtil:
         else:
             file_path = dir_name
         link = file_path.replace('/', '+')
-        link = link.replace('app+static+'.format(settings.START_FOLDER), '')
+        link = link.replace('static+'.format(settings.START_FOLDER), '')
         return link
 
     @staticmethod
@@ -34,7 +34,6 @@ class LinksUtil:
         """
         folders_in_path = current_folder.split('/')
         folders_in_path.remove('static')
-        folders_in_path.remove('app')
         links = []
         pos = len(folders_in_path)
         for i in range(len(folders_in_path)):

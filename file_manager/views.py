@@ -5,7 +5,7 @@ from django.core.files.storage import FileSystemStorage
 from django.shortcuts import redirect
 from django.shortcuts import render
 
-from bia_prev import settings
+from app import settings
 from file_manager.forms import CreateFolderForm, UploadFileForm
 from file_manager.processes.content import Content
 from file_manager.processes.links import LinksUtil
@@ -71,7 +71,7 @@ def delete(request, path: str):
     :param path: путь до объекта
     """
     folder_path = '{}/{}'.format(settings.START_FOLDER, path.replace('+', '/'))
-    redirect_link = '+'.join(folder_path.split('/')[2:-1])
+    redirect_link = '+'.join(folder_path.split('/')[1:-1])
     if '.' in folder_path:
         os.remove(folder_path)
     else:
