@@ -18,8 +18,8 @@ class FileManagerTestCase(TestCase):
             '{}/for_test'.format(settings.START_FOLDER))
         shutil.rmtree('{}/for_test'.format(settings.START_FOLDER))
         self.assertEqual(result, [
-            {'name': '1', 'link': 'for_test+1', 'size': 4.0},
-            {'name': '2', 'link': 'for_test+2', 'size': 4.0}
+            {'name': '1', 'link': 'for_test+1', 'size': 0.0},
+            {'name': '2', 'link': 'for_test+2', 'size': 0.0}
         ])
 
     def test_generate_path(self):
