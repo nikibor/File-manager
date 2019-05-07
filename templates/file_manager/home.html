@@ -97,7 +97,10 @@
     function drawImage(name) {
         if ((/\.(gif|jpg|jpeg|tiff|png)$/i).test(name)) {
             name = name.split('+').join('/');
-            link = '<img src="/static/' + name + '" style="width: 100%; height: 100%">';
+            name_transformed = name.replace(/\//g, "+");
+            link = '<img src="/static/' + name + '" style="width: 100%; height: 100%">' +
+                '<hr>' +
+                '<a align="center" href="/classify/' + name_transformed + '" class="btn btn-primary">Классифицировать </a>';
             document.getElementById("img_preview").innerHTML = link;
         }
     }
