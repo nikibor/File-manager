@@ -8,7 +8,7 @@ from django.shortcuts import render
 from keras.applications.resnet50 import ResNet50
 from keras.applications.resnet50 import preprocess_input, decode_predictions
 from keras.preprocessing import image
-
+import keras
 from app import settings
 from file_manager.forms import CreateFolderForm, UploadFileForm
 from file_manager.processes.content import Content
@@ -84,24 +84,26 @@ def delete(request, path: str):
 
 
 def image_classify(request, path: str):
-    folder_path = '{}/{}'.format(settings.START_FOLDER, path.replace('+', '/'))
+    with keras.backend.get_session().graph.as_default():
+        folder_path = '{}/{}'.format(settings.START_FOLDER,
+                                     path.replace('+', '/'))
+        model = ResNet50(weights='imagenet')
 
-    model = ResNet50(weights='imagenet')
+        img = image.load_img(folder_path, target_size=(224, 224))
+        x = image.img_to_array(img)
+        x = np.expand_dims(x, axis=0)
+        x = preprocess_input(x)
 
-    img = image.load_img(folder_path, target_size=(224, 224))
-    x = image.img_to_array(img)
-    x = np.expand_dims(x, axis=0)
-    x = preprocess_input(x)
-
-    preds = model.predict(x)
-    answers = decode_predictions(preds, top=10)[0]
-    for answer in answers:
-        print(answer)
-    data = {
-        'image': folder_path,
-        'classes': answers
-    }
-    return render(request, 'file_manager/classiffy_result.html', data)
+        preds = model.predict(x)
+        answers = decode_predictions(preds, top=10)[0]
+        marks = {}
+        for answer in answers:
+            marks[answer[1]] = answer[2]
+        data = {
+            'image': folder_path,
+            'classes': marks
+        }
+        return render(request, 'file_manager/classiffy_result.html', data)
 
 
 def upload_file(request):
