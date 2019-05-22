@@ -1,6 +1,7 @@
 import os
 import shutil
 
+import keras
 import numpy as np
 from django.core.files.storage import FileSystemStorage
 from django.shortcuts import redirect
@@ -8,8 +9,9 @@ from django.shortcuts import render
 from keras.applications.resnet50 import ResNet50
 from keras.applications.resnet50 import preprocess_input, decode_predictions
 from keras.preprocessing import image
-import keras
+
 from app import settings
+from darknet.python.darknet import yolo_image
 from file_manager.forms import CreateFolderForm, UploadFileForm
 from file_manager.processes.content import Content
 from file_manager.processes.links import LinksUtil
@@ -99,8 +101,11 @@ def image_classify(request, path: str):
         marks = {}
         for answer in answers:
             marks[answer[1]] = answer[2]
+
+        yolo_img_path = yolo_image(folder_path)
         data = {
             'image': folder_path,
+            'yolo_image': yolo_img_path,
             'classes': marks
         }
         return render(request, 'file_manager/classiffy_result.html', data)

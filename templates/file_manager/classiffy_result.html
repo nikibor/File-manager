@@ -27,7 +27,6 @@
             ]);
 
             var options = {
-                title: 'Топ 10 классов по распределению вероятности',
                 hAxis: {
                     title: 'Класс',
                 },
@@ -50,25 +49,37 @@
     </h1>
     <div class="row">
         <div class="col-md-1"></div>
-        <div class="col-md-6">
-            <div class="card">
-                <img src="/{{ image }}" style="width: 100%">
-            </div>
-        </div>
-        <div class="col-md-4">
+        <div class="col-md-10">
             <div class="card">
                 <div class="card-header">
                     <h2>
-                        Классы
+                        YOLO - классификатор (State of the art решение)
+                    </h2>
+                </div>
+                <img src="/{{ yolo_image }}" style="width: 100%">
+            </div>
+        </div>
+        <div class="col-md-1"></div>
+    </div>
+    <div class="row">
+        <div class="col-md-1"></div>
+        <div class="col-md-10">
+            <div class="card">
+                <div class="card-header">
+                    <h2>
+                        Классы ResNet-50
                     </h2>
                 </div>
                 <div class="card-body">
                     <div id="chart_div"
-                         style="width: 100%"></div>
+                         style="width: 100%; height: 300px; margin-bottom: 50px"></div>
                 </div>
             </div>
         </div>
+        <div class="col-md-1"></div>
     </div>
+
+
 </div>
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
         integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"

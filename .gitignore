@@ -113,3 +113,4 @@ venv.bak/
 out
 gen
 /static/
+/darknet/yolov3.weights
