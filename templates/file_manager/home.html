@@ -4,19 +4,24 @@
 <head>
     <meta charset="UTF-8">
     <title>Home</title>
-    <link rel="stylesheet"
-          href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
-          integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
-          crossorigin="anonymous">
+    <link rel="stylesheet" href="static/staff/bootstrap.css" type="text/css">
+    <link rel="stylesheet" href="static/staff/style.css" type="text/css">
 </head>
-<body>
+<body style="background: whitesmoke">
 <div class="container-fluid">
-    <h1 align="center" style="margin-bottom: 20px; margin-top: 20px">
-        File manager
+    <h1 align="center" style="margin-bottom: 20px; margin-top: 20px; background: white">
+        Файловый менеджер
     </h1>
     <div class="row">
         <div class="col-md-1"></div>
-        <div class="col-md-7">
+        <div class="col-md-7" style="background: white; margin: 20px 0px 0px 20px">
+            <h1 align="center" style="margin-bottom: 20px; margin-top: 20px">
+                <form class="form-inline" align="center" action="{%  url 'search' %}" method="post">
+                    {% csrf_token %}
+                    {{ search_form }}
+                    <button type="submit" class="btn btn-warning">Поиск</button>
+                </form>
+            </h1>
             <table class="table">
                 <thead class="thead-light">
                 <tr>
@@ -51,7 +56,7 @@
                 {% endfor %}
                 </tbody>
             </table>
-            <div class="card">
+            <div class="card" style="margin: 20px 0px 0px 20px">
                 <div class="card-header">
                     Редактирование
                 </div>
@@ -75,8 +80,8 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-3">
-            <div class="card">
+        <div class="col-md-3" style="background: white; margin: 20px 0px 0px 20px">
+            <div class="card" style=" margin: 20px 0px 0px 20px">
                 <div class="card-header">
                     <h2>
                         Изображение

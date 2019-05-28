@@ -26,7 +26,7 @@ class Content:
         files = []
         for i in range(len(file_names)):
             is_folder = '.' not in file_names[i]
-            if file_names[i] == 'hiden':
+            if file_names[i] in ['hiden', 'staff', 'classified']:
                 continue
             files.append({
                 'name': file_names[i],

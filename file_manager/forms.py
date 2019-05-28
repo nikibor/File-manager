@@ -21,3 +21,18 @@ class UploadFileForm(forms.Form):
     """
     file = forms.FileField(required=False, label=False)
     redirect_link = forms.CharField(widget=forms.HiddenInput())
+
+
+class SearchClassForm(forms.Form):
+    """
+    Форма поиска по классам
+    """
+    query = forms.CharField(
+        widget=forms.TextInput(
+            attrs={
+                'class': 'form-control',
+                'placeholder': 'Введите название класса',
+                'style': 'width:80%'}),
+        label=False,
+        required=False)
+    redirect_link = forms.CharField(widget=forms.HiddenInput())

@@ -3,6 +3,7 @@ import shutil
 
 import keras
 import numpy as np
+from app.settings import START_FOLDER
 from django.core.files.storage import FileSystemStorage
 from django.shortcuts import redirect
 from django.shortcuts import render
@@ -12,22 +13,64 @@ from keras.preprocessing import image
 
 from app import settings
 from darknet.python.darknet import yolo_image
-from file_manager.forms import CreateFolderForm, UploadFileForm
+from file_manager.forms import CreateFolderForm, UploadFileForm, SearchClassForm
+from file_manager.models import Classified, ImgClass
+from file_manager.processes.classification import FileClassifier
 from file_manager.processes.content import Content
 from file_manager.processes.links import LinksUtil
+
+
+# todo: 1. Добавить Celery для управления и просмотра нагрузки
+# todo: 2. Настроить докер контейнеры с запуском тестов - стандартные Django + нагрузочное
+# todo: 3. Настройка визуала - добавление динамики js
+# todo: 4. Добавление поиска: каждый новый загруженный файл автоматичесски классифицируется, при попадании в систему, затем можно выполнить поиск по названию класса
+# todo: 5. Хранить и переносить данные о размеченных классах в NoSQL БД - Mongo
+# todo: 6. Переписать README.MD
+# todo: 7. ElasticSearch + Kibana + Sentry (???)
+
+def file_classification(request):
+    shutil.rmtree(os.path.join(START_FOLDER, 'classified'))
+    Classified.objects.all().delete()
+    FileClassifier.classify_all()
 
 
 def index_page(request):
     """
     Титульная страница приложения, открывающая начальную дирректорию
     """
+
     files = Content.generate_folder_links(settings.START_FOLDER)
     response = {
         'files': files,
         'folder_form': CreateFolderForm(data={'redirect_link': '/'}),
-        'file_form': UploadFileForm(data={'redirect_link': '/'})
+        'file_form': UploadFileForm(data={'redirect_link': '/'}),
+        'search_form': SearchClassForm(data={'redirect_link': '/'})
     }
     return render(request, 'file_manager/home.html', response)
+
+
+def search(request):
+    """
+    Генерация новой дирректории, название которой полученно с формы
+    """
+    search_data = []
+    form = SearchClassForm(request.POST)
+    if form.is_valid():
+        form_data = form.cleaned_data
+        img_class = form_data.get('query')
+        redirect_link = form_data.get('redirect_link')
+        try:
+            img_cathegory = ImgClass.objects.get(title=img_class)
+            result = Classified.objects.filter(img_class=img_cathegory)
+            for cat in result:
+                search_data.append(
+                    {
+                        'path': cat.path
+                    }
+                )
+            return redirect(redirect_link)
+        except Exception:
+            return redirect(redirect_link)
 
 
 def base_page(request, path: str):
@@ -44,6 +87,7 @@ def base_page(request, path: str):
         path_links = LinksUtil.generate_path_links(current_path)
         response = {
             'files': files,
+            'search_form': SearchClassForm(data={'redirect_link': '/'}),
             'folder_links': path_links,
             'folder_form': CreateFolderForm(data={
                 'redirect_link':
