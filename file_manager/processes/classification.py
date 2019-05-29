@@ -14,7 +14,8 @@ class FileClassifier:
                 if 'classified' in name:
                     continue
                 extension = name.split('.')[-1]
-                if extension not in ['gif', 'jpg', 'peg', 'tiff', 'png']:
+                if extension.lower() not in ['gif', 'jpg', 'peg', 'tiff',
+                                             'png']:
                     continue
                 file_path = os.path.join(path, name)
                 new_path, classes = yolo_image(file_path, folder='classified')
@@ -30,3 +31,4 @@ class FileClassifier:
                         img.save()
                     except Exception:
                         continue
+        return "OK"

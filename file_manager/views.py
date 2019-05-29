@@ -29,7 +29,9 @@ from file_manager.processes.links import LinksUtil
 # todo: 7. ElasticSearch + Kibana + Sentry (???)
 
 def file_classification(request):
-    shutil.rmtree(os.path.join(START_FOLDER, 'classified'))
+    if os.path.exists(os.path.join(START_FOLDER, 'classified')):
+        shutil.rmtree(os.path.join(START_FOLDER, 'classified'))
+    os.mkdir(os.path.join(START_FOLDER, 'classified'))
     Classified.objects.all().delete()
     FileClassifier.classify_all()
 
@@ -65,10 +67,17 @@ def search(request):
             for cat in result:
                 search_data.append(
                     {
-                        'path': cat.path
+                        'path': cat.path,
+                        'title': cat.name
                     }
                 )
-            return redirect(redirect_link)
+            response = {
+                'search_form': SearchClassForm(data={'redirect_link': '/'}),
+                'images': search_data
+            }
+            return render(request,
+                          'file_manager/search_result.html',
+                          response)
         except Exception:
             return redirect(redirect_link)
 
@@ -146,7 +155,7 @@ def image_classify(request, path: str):
         for answer in answers:
             marks[answer[1]] = answer[2]
 
-        yolo_img_path = yolo_image(folder_path)
+        yolo_img_path, _ = yolo_image(folder_path)
         data = {
             'image': folder_path,
             'yolo_image': yolo_img_path,

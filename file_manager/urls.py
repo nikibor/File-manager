@@ -10,5 +10,5 @@ urlpatterns = [
     path('search/', views.search, name='search'),
     path('upload_file/', views.upload_file, name='upload_file'),
     path('classify/<path>', views.image_classify, name='image_classify'),
-    path('settings/classify', views.file_classification,name='file_classification'),
+    path('settings/classify/', views.file_classification,name='file_classification'),
 ]

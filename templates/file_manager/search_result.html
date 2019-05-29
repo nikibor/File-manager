@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="/static/staff/bootstrap.css" type="text/css">
+    <link rel="stylesheet" href="/static/staff/style.css" type="text/css">
+</head>
+<body style="background: whitesmoke">
+<div class="container-fluid">
+    <h1 align="center"
+        style="margin-bottom: 20px; margin-top: 20px; background: whitesmoke">
+        Файловый менеджер
+    </h1>
+    <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-8">
+            {% for label in images %}
+                <div class="card">
+                    <div class="card-header" align="center">
+                        <h5><b>{{ label.title }}</b></h5>
+                    </div>
+                    <div class="card-body" style="max-height: 800px">
+                        <img src="/{{ label.path }}" style="width: 100%">
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        <div class="col-md-2"></div>
+    </div>
+</div>
+</body>
+</html>
